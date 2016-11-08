@@ -21,16 +21,18 @@ RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 
 
-
-
 ### ************  INSTALL PHP *********** ###
 
 # Install PHP 5.6
 RUN DEBIAN_FRONTEND=noninteractive LC_ALL=en_US.UTF-8 \
     apt-get update && apt-get install -y \
     php5.6 php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-xml php5.6-curl php5.6-cli php5.6-gd php5.6-intl php5.6-xsl
+    
 
-
+### ***********  INSTALL DRUPAL 7.51 ********** ###
+RUN mkdir /var/www/drupal/
+ADD drupal/ /var/www/drupal/
+ADD localDrupal-config.conf /etc/apache2/sites-available/drupal7-test.conf
 
 
 ### ***********  INSTALL APACHE ********** ###
@@ -38,10 +40,10 @@ RUN DEBIAN_FRONTEND=noninteractive LC_ALL=en_US.UTF-8 \
 
 # Install Apache
 RUN apt-get install -qy apache2 apache2-utils libapache2-mod-php php-curl
-RUN service apache2 start
+#RUN service apache2 start
 
 # Update apache configuration with this one
-ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
+#ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
 ADD apache-ports.conf /etc/apache2/ports.conf
 RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf
 
@@ -57,6 +59,10 @@ RUN mkdir /etc/service/apache2
 ADD apache.sh /etc/service/apache2/run
 RUN chmod +x /etc/service/apache2/run
 RUN a2enconf fqdn
+RUN service apache2 start
+
+RUN a2ensite drupal7-test
+RUN service apache2 restart
 
 # Enable PHP
 RUN a2enmod php5.6
