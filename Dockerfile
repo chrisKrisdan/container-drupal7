@@ -3,8 +3,11 @@ FROM phusion/baseimage
 MAINTAINER perkris <chris.krisdan@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
+# Meta-Data
+LABEL version="1.0.0" type="Drupal Host"
+
 # Set correct environment variables
-ENV HOME /root
+ENV DEBIAN_FRONTEND=noninteractive HOME /root LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
@@ -12,9 +15,6 @@ CMD ["/sbin/my_init"]
 # INstall Language pack required by PHP 5.6
 RUN apt-get update && \
     apt-get install -y language-pack-en-base
-
-ENV LC_ALL=en_GB.UTF-8
-ENV LANG=en_GB.UTF-8
 
 # Add PPA for PHP 5.6
 RUN apt-get update && apt-get install -y software-properties-common
