@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 LABEL version="1.0.0" type="Drupal Host"
 
 # Set correct environment variables
-ENV DEBIAN_FRONTEND=noninteractive HOME /root LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive HOME=/root LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
