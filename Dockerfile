@@ -54,7 +54,7 @@ RUN apt-get install -qy \
 
 
 # Update apache configuration with this one
-ADD localDrupal-config.conf /etc/apache2/sites-available/drupal7-test.conf
+ADD drupal7-config.conf /etc/apache2/sites-available/drupal7-test.conf
 ADD apache-ports.conf /etc/apache2/ports.conf
 RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf
 
