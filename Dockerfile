@@ -1,49 +1,60 @@
 # Base Image / OS
 FROM phusion/baseimage
 MAINTAINER perkris <chris.krisdan@gmail.com>
-ENV DEBIAN_FRONTEND noninteractive
 
 # Meta-Data
 LABEL version="1.0.0" type="Drupal Host"
 
 # Set correct environment variables
-ENV DEBIAN_FRONTEND=noninteractive HOME=/root LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive \
+	HOME=/root \
+	LC_ALL=en_GB.UTF-8 \
+	LANG=en_GB.UTF-8
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
 
-# INstall Language pack required by PHP 5.6
+# INstall Language pack required by PHP 5.6, Add PPA for PHP 5.6
 RUN apt-get update && \
-    apt-get install -y language-pack-en-base
-
-# Add PPA for PHP 5.6
-RUN apt-get update && apt-get install -y software-properties-common
-RUN add-apt-repository ppa:ondrej/php
+    apt-get install -y language-pack-en-base \
+    software-properties-common && \
+    add-apt-repository ppa:ondrej/php
 
 
 ### ************  INSTALL PHP *********** ###
 
 # Install PHP 5.6
-RUN DEBIAN_FRONTEND=noninteractive LC_ALL=en_US.UTF-8 \
-    apt-get update && apt-get install -y \
-    php5.6 php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-xml php5.6-curl php5.6-cli php5.6-gd php5.6-intl php5.6-xsl
+RUN apt-get update && apt-get install -y \
+    php5.6 \
+    php5.6-mbstring \
+    php5.6-mcrypt \
+    php5.6-mysql \
+    php5.6-xml \
+    php5.6-curl \
+    php5.6-cli \
+    php5.6-gd \
+    php5.6-intl \
+    php5.6-xsl
     
 
 ### ***********  INSTALL DRUPAL 7.51 ********** ###
 RUN mkdir /var/www/drupal/
 ADD drupal/ /var/www/drupal/
-ADD localDrupal-config.conf /etc/apache2/sites-available/drupal7-test.conf
 
 
 ### ***********  INSTALL APACHE ********** ###
 
 
 # Install Apache
-RUN apt-get install -qy apache2 apache2-utils libapache2-mod-php php-curl
-#RUN service apache2 start
+RUN apt-get install -qy \
+	apache2 \
+	apache2-utils \
+	libapache2-mod-php \
+	php-curl
+
 
 # Update apache configuration with this one
-#ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
+ADD localDrupal-config.conf /etc/apache2/sites-available/drupal7-test.conf
 ADD apache-ports.conf /etc/apache2/ports.conf
 RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf
 
