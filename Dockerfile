@@ -72,11 +72,10 @@ RUN adduser --no-create-home --disabled-password --gecos "" drupal
 RUN mkdir /var/www/drupal/
 ADD drupal/ /var/www/drupal/
 COPY drupal/sites/default/default.settings.php /var/www/drupal/sites/default/settings.php
-#RUN find /var/www/drupal/ -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-#RUN find /var/www/drupal/ -type f -exec chmod u=rw,g=r,o= '{}' \;
-#RUN chmod 774 /var/www/drupal/sites/default/
-#RUN chmod 774 /var/www/drupal/sites/default/settings.php
-#RUN chown 
+RUN chown -R drupal:www-data /var/www/drupal/
+RUN find /var/www/drupal/ -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+RUN find /var/www/drupal/ -type f -exec chmod u=rw,g=r,o= '{}' \;
+RUN chown -R www-data:drupal /var/www/drupal/sites/default
 
 RUN a2ensite drupal7-test
 RUN service apache2 restart
