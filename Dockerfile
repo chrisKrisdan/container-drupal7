@@ -68,10 +68,10 @@ RUN service apache2 start
 
 ### ***********  INSTALL DRUPAL 7.51 ********** ###
 
-RUN adduser --no-create-home drupal 
+RUN adduser --no-create-home --disabled-password --gecos "" drupal 
 RUN mkdir /var/www/drupal/
 ADD drupal/ /var/www/drupal/
-#COPY drupal/sites/default/default.settings.php /var/www/drupal/sites/default/settings.php
+COPY drupal/sites/default/default.settings.php /var/www/drupal/sites/default/settings.php
 #RUN find /var/www/drupal/ -type d -exec chmod u=rwx,g=rx,o= '{}' \;
 #RUN find /var/www/drupal/ -type f -exec chmod u=rw,g=r,o= '{}' \;
 #RUN chmod 774 /var/www/drupal/sites/default/
