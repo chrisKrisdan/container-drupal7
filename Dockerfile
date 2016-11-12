@@ -35,12 +35,6 @@ RUN apt-get update && apt-get install -y \
     php5.6-gd \
     php5.6-intl \
     php5.6-xsl
-    
-
-### ***********  INSTALL DRUPAL 7.51 ********** ###
-RUN mkdir /var/www/drupal/
-ADD drupal/ /var/www/drupal/
-
 
 ### ***********  INSTALL APACHE ********** ###
 
@@ -71,6 +65,16 @@ ADD apache.sh /etc/service/apache2/run
 RUN chmod +x /etc/service/apache2/run
 RUN a2enconf fqdn
 RUN service apache2 start
+
+### ***********  INSTALL DRUPAL 7.51 ********** ###
+RUN mkdir /var/www/drupal/
+ADD drupal/ /var/www/drupal/
+#COPY drupal/sites/default/default.settings.php /var/www/drupal/sites/default/settings.php
+#RUN find /var/www/drupal/ -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+#RUN find /var/www/drupal/ -type f -exec chmod u=rw,g=r,o= '{}' \;
+#RUN chmod 774 /var/www/drupal/sites/default/
+#RUN chmod 774 /var/www/drupal/sites/default/settings.php
+#RUN chown 
 
 RUN a2ensite drupal7-test
 RUN service apache2 restart
