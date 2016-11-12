@@ -12,7 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 	LANG=en_GB.UTF-8
 
 # Use baseimage-docker's init system
-CMD ["/sbin/my_init"]
+ENTRYPOINT ["/sbin/my_init"]
 
 # INstall Language pack required by PHP 5.6, Add PPA for PHP 5.6
 RUN apt-get update && \
@@ -67,6 +67,8 @@ RUN a2enconf fqdn
 RUN service apache2 start
 
 ### ***********  INSTALL DRUPAL 7.51 ********** ###
+
+RUN adduser --no-create-home drupal 
 RUN mkdir /var/www/drupal/
 ADD drupal/ /var/www/drupal/
 #COPY drupal/sites/default/default.settings.php /var/www/drupal/sites/default/settings.php
