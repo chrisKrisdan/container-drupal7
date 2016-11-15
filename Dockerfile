@@ -48,7 +48,7 @@ RUN apt-get install -qy \
 
 
 # Update apache configuration with this one
-ADD drupal7-config.conf /etc/apache2/sites-available/drupal7-test.conf
+ADD drupal7-config.conf /etc/apache2/sites-available/drupal7.conf
 ADD apache-ports.conf /etc/apache2/ports.conf
 RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf
 
@@ -77,7 +77,7 @@ RUN find /var/www/drupal/ -type d -exec chmod u=rwx,g=rx,o= '{}' \;
 RUN find /var/www/drupal/ -type f -exec chmod u=rw,g=r,o= '{}' \;
 RUN chown -R www-data:drupal /var/www/drupal/sites/default
 
-RUN a2ensite drupal7-test
+RUN a2ensite drupal7
 RUN service apache2 restart
 
 # Enable PHP
